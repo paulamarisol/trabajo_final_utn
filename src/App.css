@@ -1,0 +1,197 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+
+.app {
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+}
+
+
+.sidebar {
+  width: 25%;
+  background: #f0f2f5;
+  padding: 10px;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.sidebar input {
+  width: 100%;
+  padding: 6px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.chat-list {
+  list-style: none;
+}
+
+.chat-list .contact {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.chat-list .contact:hover {
+  background: #e5e5e5;
+}
+
+.chat-list .contact img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.chat-list .contact span {
+  font-weight: bold;
+}
+
+
+.chat {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.chat-header {
+  background: #ededed;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.messages {
+  flex: 1;
+  padding: 15px;
+  background: #f4f4f4;
+  overflow-y: auto;
+  height: calc(100vh - 160px);
+}
+
+.message {
+  max-width: 70%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.sent {
+  background: #d9fdd3;
+  margin-left: auto;
+}
+
+.received {
+  background: white;
+}
+
+.message-text {
+  margin-bottom: 5px;
+}
+
+.message-time {
+  font-size: 0.8em;
+  color: #888;
+  text-align: right;
+}
+
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  background: #ededed;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.chat-input button {
+  margin-left: 5px;
+  padding: 10px 15px;
+  background-color: #25d366;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background-color: #128c7e;
+}
+
+
+@media (max-width: 1024px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .chat {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  
+  .chat {
+    width: 100%;
+  }
+  
+  .chat-header {
+    font-size: 1rem;
+  }
+  
+  .messages {
+    padding: 10px;
+  }
+  
+  .message {
+    max-width: 80%;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .message {
+    max-width: 90%;
+    font-size: 12px;
+  }
+
+  .chat-header {
+    font-size: 1rem;
+  }
+  
+  .chat-input input {
+    font-size: 14px;
+  }
+
+  .chat-input button {
+    padding: 8px 12px;
+  }
+}
+

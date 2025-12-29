@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Web</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <h2>Chats</h2>
+    <input type="text" placeholder="Buscar chat...">
+    <ul class="chat-list">
+      <li class="active">Diplomatura</li>
+      <li>Kevin</li>
+      <li>Alejandra</li>
+      <li>Vale</li>
+    </ul>
+  </aside>
+
+  <main class="chat">
+    <header class="chat-header">
+      <h3>Diplomatura</h3>
+    </header>
+
+    <section class="messages" id="messages">
+      <div class="message received">Hola, ¿hiciste el trabajo?</div>
+      <div class="message sent">Sí, ya lo estoy terminando.</div>
+    </section>
+
+    <footer class="chat-input">
+      <input type="text" id="msgInput" placeholder="Escribe un mensaje...">
+      <button onclick="sendMessage()">Enviar</button>
+    </footer>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
