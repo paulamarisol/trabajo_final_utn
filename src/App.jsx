@@ -10,18 +10,13 @@ const contacts = [
   { name: "Sabrina", image: "https://i.pravatar.cc/100?img=6" },
 ];
 
-function App() {
-  const [messages, setMessages] = useState({
-    Diplomatura: [
-      { text: "Hola, ¿hiciste el trabajo?", type: "received", time: "14:45", read: true },
-      { text: "Sí, ya lo estoy terminando.", type: "sent", time: "14:46", read: true },
-    ],
-    Kevin: [{ text: "¿Estás?", type: "received", time: "13:20", read: false }],
-    Alejandra: [{ text: "¡No sabes a quién vi!", type: "received", time: "12:30", read: false }],
-    Vale: [],
-    Laura: [],
-    Sabrina: [],
-  });
+export default function App() {
+  const [currentContact, setCurrentContact] = useState("Diplomatura");
+  const [showChat, setShowChat] = useState(false);
+  const [input, setInput] = useState("");
+  const [search, setSearch] = useState("");
+  const [isOnline, setIsOnline] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   const [chats, setChats] = useState([
     { name: "Diplomatura", unreadCount: 0 },
@@ -32,17 +27,37 @@ function App() {
     { name: "Sabrina", unreadCount: 0 },
   ]);
 
-  const [currentContact, setCurrentContact] = useState("Diplomatura");
-  const [input, setInput] = useState("");
-  const [search, setSearch] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
-  const [isOnline, setIsOnline] = useState(true);
+  const [messages, setMessages] = useState({
+    Diplomatura: [
+      { text: "Hola, ¿hiciste el trabajo?", type: "received", time: "14:45" },
+      { text: "Sí, ya lo estoy terminando.", type: "sent", time: "14:46" },
+    ],
+    Kevin: [{ text: "¿Estás?", type: "received", time: "13:20" }],
+    Alejandra: [{ text: "¡No sabes a quién vi!", type: "received", time: "12:30" }],
+    Vale: [  { text: "Hola, ¿estas ocupada?", type: "received", time: "14:45" },
+      { text: "no, queres que te llame?", type: "sent", time: "14:46" },],
+    Laura: [  { text: "Hola vas a la fiesta hoy?", type: "received", time: "14:45" },
+      { text: "estoy terminando un trabajo, te aviso en un rato", type: "sent", time: "14:46" },],
+    Sabrina: [  { text: "venis a la fiesta", type: "received", time: "14:45" },
+      { text: "Sí,en breve voy para alla.", type: "sent", time: "14:46" },],
+  });
 
   useEffect(() => {
     setIsOnline(true);
-    const timer = setTimeout(() => setIsOnline(false), 8000);
+    const timer = setTimeout(() => setIsOnline(false), 6000);
     return () => clearTimeout(timer);
   }, [currentContact]);
+
+  const selectContact = (name) => {
+    setCurrentContact(name);
+    setShowChat(true);
+
+    setChats((prev) =>
+      prev.map((chat) =>
+        chat.name === name ? { ...chat, unreadCount: 0 } : chat
+      )
+    );
+  };
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -56,29 +71,11 @@ function App() {
       ...prev,
       [currentContact]: [
         ...(prev[currentContact] || []),
-        { text: input, type: "sent", time, read: false },
+        { text: input, type: "sent", time },
       ],
     }));
 
     setInput("");
-    setTimeout(() => {
-      setMessages((prev) => ({
-        ...prev,
-        [currentContact]: prev[currentContact].map((m) =>
-          m.type === "sent" ? { ...m, read: true } : m
-        ),
-      }));
-    }, 1500);
-  };
-
-
-  const selectContact = (name) => {
-    setCurrentContact(name);
-    setChats((prev) =>
-      prev.map((chat) =>
-        chat.name === name ? { ...chat, unreadCount: 0 } : chat
-      )
-    );
   };
 
   const filteredContacts = contacts.filter((c) =>
@@ -87,9 +84,16 @@ function App() {
 
   return (
     <div className={`app ${darkMode ? "dark" : ""}`}>
-
-      <aside className="sidebar">
+      
+      <aside className={`sidebar ${showChat ? "hide-mobile" : ""}`}>
         <h2>Chats</h2>
+
+        <button
+          className="dark-btn"
+          onClick={() => setDarkMode(!darkMode)}
+        >
+          {darkMode ? "☀️ Modo claro" : "🌙 Modo oscuro"}
+        </button>
 
         <input
           placeholder="Buscar chat..."
@@ -97,13 +101,10 @@ function App() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <button className="dark-btn" onClick={() => setDarkMode(!darkMode)}>
-          🌙 {darkMode ? "Modo claro" : "Modo oscuro"}
-        </button>
-
         <ul className="chat-list">
           {filteredContacts.map((contact) => {
             const chat = chats.find((c) => c.name === contact.name);
+
             return (
               <li
                 key={contact.name}
@@ -122,8 +123,13 @@ function App() {
         </ul>
       </aside>
 
-      <main className="chat">
+      
+      <main className={`chat ${showChat ? "show-mobile" : ""}`}>
         <header className="chat-header">
+          <button className="back-btn" onClick={() => setShowChat(false)}>
+            ←
+          </button>
+
           <div>
             <strong>{currentContact}</strong>
             <div className="chat-status">
@@ -136,12 +142,7 @@ function App() {
           {(messages[currentContact] || []).map((m, i) => (
             <div key={i} className={`message ${m.type}`}>
               <div>{m.text}</div>
-              <div className="message-time">
-                {m.time}
-                {m.type === "sent" && (
-                  <span className={`check ${m.read ? "read" : ""}`}> ✔✔</span>
-                )}
-              </div>
+              <div className="message-time">{m.time}</div>
             </div>
           ))}
         </section>
@@ -159,5 +160,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
